@@ -5,59 +5,109 @@
 @layer base {
   :root {
     color-scheme: dark;
+    --background: 8 9 13;
+    --surface: 15 18 24;
+    --surface-raised: 21 25 34;
+    --border: 32 37 50;
+    --foreground: 243 245 249;
+    --muted: 142 150 167;
+    --accent: 99 102 241;
   }
 
   html {
     scroll-behavior: smooth;
+    background-color: #08090d;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "cv11", "ss01";
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.08), transparent 70%),
+      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 48px 48px, 48px 48px;
+    background-position: center top, center center, center center;
+    font-feature-settings: "cv11", "ss01", "cv01";
   }
 
   ::selection {
-    @apply bg-accent/30 text-foreground;
+    @apply bg-accent/30 text-white;
   }
 
+  /* Premium slim scrollbar */
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-background;
+    background: #08090d;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-raised rounded-full;
+    background: #1c2230;
+    border-radius: 9999px;
+    border: 2px solid #08090d;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-border;
+    background: #2f3647;
   }
 
-  h1, h2, h3, h4 {
-    @apply tracking-tight;
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-semibold text-foreground;
   }
 
   a:focus-visible,
   button:focus-visible,
+  input:focus-visible,
   [tabindex]:focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
   }
 }
 
+@layer utilities {
+  .glass-panel {
+    background: rgba(15, 18, 24, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-panel-hover {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-panel-hover:hover {
+    background: rgba(21, 25, 34, 0.85);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(99, 102, 241, 0.12);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-foreground to-muted;
+  }
+
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-indigo-400;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
   }
 
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
 }

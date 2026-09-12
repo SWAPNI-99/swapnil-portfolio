@@ -1,76 +1,130 @@
-export type SkillLevel = "Beginner" | "Intermediate";
+export type SkillTier = "Core" | "Developing" | "Foundational" | "Exploring";
+export type FinanceLevel = "Beginner" | "Intermediate";
 
-export type SkillCategory = {
+export interface SkillItem {
+  name: string;
+  note?: string;
+  tag?: string;
+}
+
+export interface SkillGroup {
+  id: string;
   category: string;
-  items: string[];
-};
+  subtitle: string;
+  badge: string;
+  items: SkillItem[];
+}
 
-export type FinanceSkill = {
+export interface FinanceSkillItem {
   area: string;
-  level: SkillLevel;
+  level: FinanceLevel;
+  highlight?: boolean;
+}
+
+export interface LeetCodeStats {
+  totalSolved: number;
+  easy: number;
+  medium: number;
+  hard: number;
+  currentTopic: string;
+  familiarTopics: string[];
+  profileUrl: string;
+  note: string;
+}
+
+export const technicalSkills: SkillGroup[] = [
+  {
+    id: "programming",
+    category: "Programming Languages",
+    subtitle: "Core languages for systems, algorithms, and AI tooling",
+    badge: "Languages",
+    items: [
+      { name: "C", note: "Procedural programming & low-level memory basics" },
+      { name: "C++", note: "Object-oriented design & DSA problem solving" },
+      { name: "Python", note: "AI orchestration, backend scripting & analytics" }
+    ]
+  },
+  {
+    id: "dsa",
+    category: "Data Structures & Algorithms",
+    subtitle: "Active algorithmic progression through consistent practice",
+    badge: "Problem Solving",
+    items: [
+      { name: "Arrays", tag: "Familiar" },
+      { name: "Linked Lists", tag: "Familiar" },
+      { name: "Sorting Algorithms", tag: "Familiar" },
+      { name: "Trees & Binary Search Trees", tag: "Currently Learning" }
+    ]
+  },
+  {
+    id: "ai-automation",
+    category: "AI & Agentic Systems",
+    subtitle: "Designing autonomous agent architectures and local inference",
+    badge: "Applied AI",
+    items: [
+      { name: "Agentic AI Systems", note: "State machines, planning, and tool calling" },
+      { name: "Local LLM Experimentation", note: "Ollama, LLaMA-3, private inference" },
+      { name: "AI-Assisted Development", note: "Accelerating execution through modern AI tools" },
+      { name: "AI Automation Workflows", note: "Automated desktop tasks and search retrieval" },
+      { name: "LLM Integration", note: "FastAPI endpoints with Pydantic serialization" }
+    ]
+  },
+  {
+    id: "web-systems",
+    category: "Web & Full-Stack Development",
+    subtitle: "Building responsive, modern, user-facing applications",
+    badge: "Full Stack",
+    items: [
+      { name: "Full-Stack Web Development", note: "Next.js, React, modern CSS" },
+      { name: "AI-Integrated Web Applications", note: "Bridging frontend interfaces with LLM backends" },
+      { name: "RESTful API Integration", note: "Async client-server data flows" },
+      { name: "Responsive & Accessible UI", note: "Tailwind CSS & semantic design" }
+    ]
+  },
+  {
+    id: "data-analytics",
+    category: "Data Science & Analytics",
+    subtitle: "Analytical fundamentals and data interpretation",
+    badge: "Data",
+    items: [
+      { name: "Data Analytics Fundamentals", note: "Extracting actionable insights from data" },
+      { name: "Data Science Concepts", note: "Foundational statistics & exploratory data analysis" }
+    ]
+  }
+];
+
+export const financeSkills: FinanceSkillItem[] = [
+  { area: "Technical Analysis", level: "Intermediate", highlight: true },
+  { area: "Risk Management", level: "Intermediate", highlight: true },
+  { area: "Trading Principles", level: "Intermediate", highlight: true },
+  { area: "Mutual Funds", level: "Intermediate", highlight: true },
+  { area: "Stock Market Fundamentals", level: "Beginner" },
+  { area: "Fundamental Analysis", level: "Beginner" },
+  { area: "Financial Statements", level: "Beginner" },
+  { area: "Company Valuation", level: "Beginner" },
+  { area: "Portfolio Management", level: "Beginner" },
+  { area: "Equity Research", level: "Beginner" },
+  { area: "Options Basics", level: "Beginner" }
+];
+
+export const personalSkills: string[] = [
+  "Strategic Leadership",
+  "Team Management",
+  "Independent Problem Solving",
+  "Public Speaking & Presentation",
+  "Analytical Research",
+  "Event Coordination",
+  "Professional Networking",
+  "Video Editing"
+];
+
+export const leetCodeStats: LeetCodeStats = {
+  totalSolved: 29,
+  easy: 22,
+  medium: 7,
+  hard: 0,
+  currentTopic: "Trees & Tree Traversals",
+  familiarTopics: ["Arrays", "Linked Lists", "Sorting Algorithms"],
+  profileUrl: "https://leetcode.com/u/Swapnil_00/",
+  note: "Consistent algorithmic learning trajectory with zero inflated metrics."
 };
-
-import { createElement as h, type ReactNode } from "react";
-
-const skillCategories: SkillCategory[] = [];
-const financeSkills: FinanceSkill[] = [];
-
-function Badge({
-  children,
-  tone = "neutral"
-}: {
-  children: ReactNode;
-  tone?: "neutral" | "info";
-}) {
-  return h(
-    "span",
-    { className: `rounded-full px-3 py-1 text-xs ${tone === "info" ? "bg-info/10 text-info" : "bg-muted text-muted-foreground"}` },
-    children
-  );
-}
-
-function SectionHeading({
-  eyebrow,
-  title,
-  description
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-}) {
-  return h(
-    "div",
-    { className: "mb-10" },
-    h("p", { className: "mb-2 text-sm font-semibold uppercase tracking-widest text-accent" }, eyebrow),
-    h("h2", { className: "text-3xl font-bold text-foreground" }, title),
-    h("p", { className: "mt-3 text-muted-foreground" }, description)
-  );
-}
-
-const financeLevelTone: Record<SkillLevel, "neutral" | "info"> = {
-  Beginner: "neutral",
-  Intermediate: "info"
-};
-
-export default function Skills() {
-  return h("section", { id: "skills", className: "px-6 py-24" },
-    h("div", { className: "mx-auto max-w-4xl" },
-      h(SectionHeading, { eyebrow: "Skills", title: "What I work with", description: "Grouped by area — reflecting current, honest proficiency rather than exaggerated claims." }),
-      h("div", { className: "grid gap-8 sm:grid-cols-2" }, skillCategories.map((category) =>
-        h("div", { key: category.category, className: "rounded-xl border border-border bg-surface p-6" },
-          h("h3", { className: "mb-4 text-sm font-semibold uppercase tracking-widest text-accent" }, category.category),
-          h("div", { className: "flex flex-wrap gap-2" }, category.items.map((item) => h(Badge, { key: item }, item)))
-        ))),
-      h("div", { className: "mt-10" },
-        h("h3", { className: "mb-4 text-sm font-semibold uppercase tracking-widest text-accent" }, "Finance"),
-        h("div", { className: "rounded-xl border border-border bg-surface p-6" },
-          h("div", { className: "grid gap-3 sm:grid-cols-2" }, financeSkills.map((skill) =>
-            h("div", { key: skill.area, className: "flex items-center justify-between gap-3 border-b border-border/60 py-2 last:border-b-0 sm:border-b-0 sm:py-1" },
-              h("span", { className: "text-sm text-foreground" }, skill.area),
-              h(Badge, { tone: financeLevelTone[skill.level], children: skill.level })
-            )))
-        )
-      )
-    )
-  );
-}
